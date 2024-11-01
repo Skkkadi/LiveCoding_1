@@ -49,7 +49,7 @@ def check_restrictions(product_ids: string, customer_id: int) -> int:
 
 # Возвращает строку с товарами, прошедшими проверку
 # Если покупатель не найден, возвращает -1
-def get_unrestricted_products(product_ids: string, customer_id: int) -> int:
+def get_unrestricted_products(product_ids: string, customer_id: int) -> string:
     try:
         this_customer = session.query(Product).filter_by(id=customer_id).first()
     except Exception as e:
