@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath('./src'))
+import utils
 import logging
 import uvicorn
 from fastapi import FastAPI
@@ -36,28 +41,18 @@ class Product(Base):
     restriction = Column(Boolean, nullable=False)
 
 
+class Basket(Base):
+    __tablename__ = 'baskets'
+
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, nullable=False)
+    product_ids = Column(String, nullable=True)
+    total = Column(Integer, nullable=True)
+
+
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
-
-
-class Basket:
-    def __init__(self, customer_id):
-        self.customer_id = customer_id
-        self.product_ids = []
-
-    def add_product(self, product_id):
-        """Добавляет товар в корзину."""
-        if product_id not in self.product_ids:
-            self.product_ids.append(product_id)
-
-    def remove_product(self, product_id):
-        """Удаляет товар из корзины."""
-        if product_id in self.product_ids:
-            self.product_ids.remove(product_id)
-
-
-baskets = []
 
 
 # Добавление продукта в БД
@@ -209,17 +204,10 @@ def delete_customer(id: int) -> list:
                  }}]
 
 
-# Создание корзины (не доделано и не проверялось)
-@app.post('/addbasket')
-def add_basket(customer_id: int, product_ids: list) -> list:
-    try:
-        basket = Basket(customer_id)
-        for product_id in product_ids:
-            basket.add_product(product_id)
-            baskets.append(basket)
-    except Exception as e:
-        logger.error("Error with database: %s", e)
-        return [{'code': 500, 'body': 'InternalServerError: try again later'}]
+# Создание корзины
+@app.post('/baskets/newbasket')
+def new_basket(customer_id: int, product_ids: list) -> list:
+    pass
 
 
 if __name__ == "__main__":
