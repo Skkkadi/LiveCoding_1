@@ -219,8 +219,8 @@ def remove_product(customer_id: int, product_id: int) -> list:
 
 
 # Получает информацию о корзине, удаляет запрещенные продукты, рассчитывает стоимость и записывает в бд
-@basket_router.post('/baskets/getinfo')
-def get_basket_info(id: int) -> list:
+@basket_router.post('/baskets/confirm')
+def confirm_basket(id: int) -> list:
     try:
         item = session.query(Basket).filter_by(id=id).first()
     except Exception as e:
@@ -232,6 +232,7 @@ def get_basket_info(id: int) -> list:
             restricted_products_count = check_restrictions(product_list, item.customer_id)
             unrestricted_products = get_unrestricted_products(product_list, item.customer_id)
             price = calculate_price(product_list, item.customer_id)
+            item.product_ids = get_product_string(unrestricted_products)
             item.total = price
             session.commit()
             logger.info('Successfully got info for basket: %s', id)

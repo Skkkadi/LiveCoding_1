@@ -26,3 +26,13 @@ class Basket(Base):
     customer_id = Column(Integer, nullable=False)
     product_ids = Column(String, nullable=True)
     total = Column(Integer, nullable=True)
+
+
+class Sell(Base):
+    __tablename__ = 'sells'
+
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, nullable=False)
+    basket_id = Column(String, nullable=True)
+    total = Column(Integer, nullable=True)
+
