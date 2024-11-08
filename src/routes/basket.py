@@ -219,7 +219,7 @@ def remove_product(customer_id: int, product_id: int) -> list:
 
 
 # Получает информацию о корзине, удаляет запрещенные продукты, рассчитывает стоимость и записывает в бд
-@basket_router.post('/baskets/confirm')
+@basket_router.post('/baskets/confirm/{id}')
 def confirm_basket(id: int) -> list:
     try:
         item = session.query(Basket).filter_by(id=id).first()

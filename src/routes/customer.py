@@ -57,7 +57,7 @@ def change_customer(id: int, name: str, age: int) -> list:
 
 
 # Удаление продукта из БД
-@customer_router.post('/customers/deletecustomer')
+@customer_router.post('/customers/deletecustomer/{id}')
 def delete_customer(id: int) -> list:
     try:
         item_to_delete = session.query(Customer).filter_by(id=id).first()

@@ -61,7 +61,7 @@ def change_product(id: int, name: str, price: int, restriction: bool) -> list:
 
 
 # Удаление продукта из БД
-@product_router.post('/products/deleteproduct')
+@product_router.post('/products/deleteproduct/{id}')
 def delete_product(id: int) -> list:
     try:
         item_to_delete = session.query(Product).filter_by(id=id).first()

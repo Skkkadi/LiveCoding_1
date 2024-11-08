@@ -7,7 +7,7 @@ sell_router = APIRouter()
 
 
 # Завершает сделку, очищает корзину пользователя, записывает сделку в БД
-@sell_router.post('/sells/finishsell')
+@sell_router.post('/sells/finishsell/{basket_id}')
 def finish_sell(basket_id: int) -> list:
     item = session.query(Basket).filter_by(id=basket_id).first()
     if item:
@@ -18,8 +18,9 @@ def finish_sell(basket_id: int) -> list:
                 item.total = 0
                 item.product_ids = ''
                 session.commit()
+                logger.info(f'Sell for basket {item.id} finished')
                 return [{
-                    'code': 412,
+                    'code': 200,
                     'body': f'Sell for basket {item.id} finished'
                 }]
             else:

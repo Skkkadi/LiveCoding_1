@@ -17,8 +17,9 @@ app.include_router(customer_router, prefix="/api/v1")
 app.include_router(basket_router, prefix="/api/v1")
 app.include_router(sell_router, prefix="/api/v1")
 
+Base.metadata.create_all(engine)
+
 if __name__ == "__main__":
-    Base.metadata.create_all(engine)
-    uvicorn.run("main:app")
+    uvicorn.run(app=app, host='0.0.0.0', port=8080)
 
 session.close()
